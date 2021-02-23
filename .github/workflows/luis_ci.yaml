@@ -41,18 +41,6 @@ jobs:
         git config remote.origin.url https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
         git fetch --prune --unshallow
 
-<<<<<<< HEAD
-    - name: Install GitVersion v0.9.3
-      uses: gittools/actions/gitversion/setup@6dfe406
-      with:
-        versionSpec: '5.2.x'
-    - name: Use GitVersion v0.9.3
-      id: gitversion
-      uses: gittools/actions/gitversion/execute@6dfe406
-
-    - name: LUISAppVersion env
-      run: echo "::set-env name=LUISAppVersion::$GitVersion_SemVer"
-=======
     - name: Install GitVersion v0.9.9
       uses: gittools/actions/gitversion/setup@v0.9.9
       with:
@@ -63,7 +51,6 @@ jobs:
 
     - name: LUISAppVersion env
       run: echo "LUISAppVersion=$GitVersion_SemVer" >> $GITHUB_ENV
->>>>>>> mibon/upgrade
 
     - uses: azure/login@v1
       with:
@@ -72,31 +59,19 @@ jobs:
     - name: Get LUIS authoring key
       run: |
         keya=$(az cognitiveservices account keys list --name ${{ secrets.AZURE_LUIS_AUTHORING_RESOURCE_NAME }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --query "key1" | xargs)
-<<<<<<< HEAD
-        echo "::set-env name=LUISAuthoringKey::$keya"
-=======
         echo "LUISAuthoringKey=$keya" >> $GITHUB_ENV
->>>>>>> mibon/upgrade
         echo "::add-mask::$keya"
 
     - name: Get LUIS prediction key
       run: |
         keyp=$(az cognitiveservices account keys list --name ${{ secrets.AZURE_LUIS_PREDICTION_RESOURCE_NAME }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --query "key1" | xargs)
-<<<<<<< HEAD
-        echo "::set-env name=LUISPredictionKey::$keyp"
-=======
         echo "LUISPredictionKey=$keyp" >> $GITHUB_ENV
->>>>>>> mibon/upgrade
         echo "::add-mask::$keyp"
 
     - name: Get LUIS authoring endpoint
       run: |
         az cognitiveservices account show --name ${{ secrets.AZURE_LUIS_AUTHORING_RESOURCE_NAME }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --query "properties.endpoint" | \
-<<<<<<< HEAD
-        xargs -I {} echo "::set-env name=LUISAuthoringEndpoint::{}"
-=======
         xargs -I {} echo "LUISAuthoringEndpoint={}" >> $GITHUB_ENV
->>>>>>> mibon/upgrade
 
     - uses: actions/setup-node@v1
       with:
